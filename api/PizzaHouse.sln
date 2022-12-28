@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHouse.Api", "PizzaHouse.Api\PizzaHouse.Api.csproj", "{B3811966-A781-42F3-B650-899FE764F1E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHouse.Contracts", "PizzaHouse.Contracts\PizzaHouse.Contracts.csproj", "{A0C181EE-615F-40F2-9B73-0369C59CD0CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3811966-A781-42F3-B650-899FE764F1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3811966-A781-42F3-B650-899FE764F1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3811966-A781-42F3-B650-899FE764F1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3811966-A781-42F3-B650-899FE764F1E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C181EE-615F-40F2-9B73-0369C59CD0CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C181EE-615F-40F2-9B73-0369C59CD0CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C181EE-615F-40F2-9B73-0369C59CD0CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C181EE-615F-40F2-9B73-0369C59CD0CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
