@@ -1,6 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using PizzaHouse.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CORSPolicy", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithExposedHeaders("X-Pagination");
+    });
+});
+
+builder.Services.AddDbContext<PizzaHouseDbContext>(
+     dbContextOptions => dbContextOptions.UseSqlServer(
+        builder.Configuration["ConnectionStrings:PizzaHouseConnection"]));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
