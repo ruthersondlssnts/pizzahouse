@@ -1,4 +1,3 @@
-import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -22,7 +21,7 @@ export default function Summary() {
           <ListItemText
             primary="Hawaian — ₱ 350"
             secondary={
-              <React.Fragment>
+              <>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
@@ -31,7 +30,7 @@ export default function Summary() {
                 >
                   Qty - 5
                 </Typography>
-              </React.Fragment>
+              </>
             }
           />
         </ListItem>
@@ -46,7 +45,7 @@ export default function Summary() {
           <ListItemText
             primary="Volcano — ₱ 503"
             secondary={
-              <React.Fragment>
+              <>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
@@ -55,7 +54,7 @@ export default function Summary() {
                 >
                   Qty - 3
                 </Typography>
-              </React.Fragment>
+              </>
             }
           />
         </ListItem>
