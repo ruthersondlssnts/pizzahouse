@@ -22,6 +22,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
 
 function createData(name, price, amount) {
   return { name, price, amount };
@@ -35,6 +36,8 @@ const rows = [
 ];
 
 export default function CartList() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Box display={"flex"} gap={4} flexDirection={"row"}>
@@ -101,7 +104,11 @@ export default function CartList() {
               />
             </ListItem>
           </List>
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => navigate("/checkout")}
+          >
             Proceed To Checkout
           </Button>
         </Box>
