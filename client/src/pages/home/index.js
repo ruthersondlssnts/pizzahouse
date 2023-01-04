@@ -8,7 +8,7 @@ function Home() {
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
-        sx={{ height: "70vh" }}
+        mb={7}
       >
         <Box
           sx={{

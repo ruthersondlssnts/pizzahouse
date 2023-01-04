@@ -28,7 +28,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" color="grey" elevation={0}>
+    <AppBar position="sticky" elevation={0} sx={{ background: "#ffffff94" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -40,7 +40,7 @@ function Navbar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuIcon color="black" />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -98,7 +98,7 @@ function Navbar() {
               color="inherit"
             >
               <Badge badgeContent={4} color="secondary">
-                <ShoppingCartIcon sx={{ p: 0, fontSize: 30 }} />
+                <ShoppingCartIcon sx={{ p: 0, fontSize: 30, color: "black" }} />
               </Badge>
             </IconButton>
           </Box>
