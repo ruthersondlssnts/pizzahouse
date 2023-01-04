@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PizzaHouse.Api.Data;
+using PizzaHouse.Api.Services.Interfaces;
+using PizzaHouse.Api.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +22,12 @@ builder.Services.AddDbContext<PizzaHouseDbContext>(
      dbContextOptions => dbContextOptions.UseSqlServer(
         builder.Configuration["ConnectionStrings:PizzaHouseConnection"]));
 
-builder.Services.AddControllers();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen().AddSwaggerGenNewtonsoftSupport();
 
 var app = builder.Build();
 
@@ -33,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CORSPolicy");
 
 app.UseHttpsRedirection();
 

@@ -7,23 +7,18 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
 import Alert from "@mui/material/Alert/Alert";
-
-function createData(name, price) {
-  return { name, price };
-}
-
-const rows = [
-  createData("Margarita", 159),
-  createData("Hawaiian", 237),
-  createData("Veg Supreme", 262),
-  createData("Volcano", 305),
-];
+import { getProductsApi } from "../../apis";
 
 export default function ProductCatalog() {
   const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState(null);
+
+  useEffect(() => {
+    getProductsApi().then((res) => setProducts(res.data));
+  }, []);
 
   const handleClick = () => {
     setOpen(true);
@@ -36,6 +31,7 @@ export default function ProductCatalog() {
 
     setOpen(false);
   };
+
   return (
     <>
       <Container maxWidth="md">
@@ -49,27 +45,28 @@ export default function ProductCatalog() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">₱ {row.price}</TableCell>
-                  <TableCell align="right">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleClick}
-                      disabled={row.price === 159 ? true : false}
-                    >
-                      {row.price === 159 ? "Out of Stock" : "Add to Cart"}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {products &&
+                products.map((product) => (
+                  <TableRow
+                    key={product.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {product.name}
+                    </TableCell>
+                    <TableCell align="right">₱ {product.price}</TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleClick}
+                        disabled={product.inStock > 0 ? false : true}
+                      >
+                        {product.inStock > 0 ? "Add to Cart" : "Out of Stock"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

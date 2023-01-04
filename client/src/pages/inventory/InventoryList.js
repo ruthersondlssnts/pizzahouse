@@ -6,29 +6,59 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
 import Alert from "@mui/material/Alert/Alert";
 import TextField from "@mui/material/TextField/TextField";
 import FormGroup from "@mui/material/FormGroup";
+import { getProductsApi, patchProductStockApi } from "../../apis";
 
-function createData(name, price, inStock) {
-  return { name, price, inStock };
+function StockForm({ product, setOpen }) {
+  const textField = useRef();
+  const handleUpdateProductStock = (id) => {
+    patchProductStockApi(id, textField.current.value).then(() => {
+      setOpen(true);
+    });
+  };
+  return (
+    <FormGroup
+      row
+      sx={{
+        alignItems: "end",
+        justifyContent: "center",
+        gap: 2,
+      }}
+    >
+      <TextField
+        id="standard-basic"
+        defaultValue={product.inStock}
+        variant="standard"
+        size="small"
+        inputRef={textField}
+        type="number"
+        sx={{ width: 100 }}
+        inputProps={{ min: 0, style: { textAlign: "center" } }}
+      />
+
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => handleUpdateProductStock(product.id)}
+        size="small"
+      >
+        Save
+      </Button>
+    </FormGroup>
+  );
 }
-
-const rows = [
-  createData("Margarita", 159, 23),
-  createData("Hawaiian", 237, 43),
-  createData("Veg Supreme", 262, 34),
-  createData("Volcano", 305, 65),
-];
 
 export default function InventoryList() {
   const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState(null);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    getProductsApi().then((res) => setProducts(res.data));
+  }, []);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -46,48 +76,25 @@ export default function InventoryList() {
             <TableRow>
               <TableCell>Pizza</TableCell>
               <TableCell>Price (₱)</TableCell>
-              <TableCell></TableCell>
+              <TableCell align="center">Stock</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell>{row.price}</TableCell>
-                <TableCell>
-                  <FormGroup
-                    row
-                    sx={{
-                      alignItems: "end",
-                      justifyContent: "center",
-                      gap: 2,
-                    }}
-                  >
-                    <TextField
-                      id="standard-basic"
-                      label="Stock"
-                      defaultValue={row.inStock}
-                      variant="standard"
-                      size="small"
-                    />
-
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleClick}
-                      size="small"
-                    >
-                      Save
-                    </Button>
-                  </FormGroup>
-                </TableCell>
-              </TableRow>
-            ))}
+            {products &&
+              products.map((product) => (
+                <TableRow
+                  key={product.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {product.name}
+                  </TableCell>
+                  <TableCell>{product.price}</TableCell>
+                  <TableCell>
+                    <StockForm product={product} setOpen={setOpen} />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

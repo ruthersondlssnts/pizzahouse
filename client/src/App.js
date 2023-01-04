@@ -22,6 +22,11 @@ const theme = createTheme({
       textTransform: "none",
     },
   },
+  palette: {
+    secondary: {
+      main: "#5e2195",
+    },
+  },
 });
 
 function App() {
