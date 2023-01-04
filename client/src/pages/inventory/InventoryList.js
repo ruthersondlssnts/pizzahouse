@@ -45,7 +45,7 @@ export default function InventoryList() {
           <TableHead>
             <TableRow>
               <TableCell>Pizza</TableCell>
-              <TableCell>Price</TableCell>
+              <TableCell>Price (₱)</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -58,7 +58,7 @@ export default function InventoryList() {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell>₱ {row.price}</TableCell>
+                <TableCell>{row.price}</TableCell>
                 <TableCell>
                   <FormGroup
                     row

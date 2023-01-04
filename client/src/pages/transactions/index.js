@@ -1,9 +1,15 @@
-function Transactions() {
+import Container from "@mui/material/Container/Container";
+import Typography from "@mui/material/Typography";
+import TransactionList from "./TransactionList";
+function Inventory() {
   return (
-    <div>
-        Transactions
-    </div>
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom textAlign={"center"}>
+        Transaction History
+      </Typography>
+      <TransactionList />
+    </Container>
   );
 }
 
-export default Transactions;
+export default Inventory;
