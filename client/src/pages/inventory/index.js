@@ -1,12 +1,10 @@
 import Container from "@mui/material/Container/Container";
-import Typography from "@mui/material/Typography";
+import HeaderTitle from "../../components/Header";
 import InventoryList from "./InventoryList";
 function Inventory() {
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom textAlign={"center"}>
-        Manage Inventory
-      </Typography>
+      <HeaderTitle title="Manage Inventory" />
       <InventoryList />
     </Container>
   );

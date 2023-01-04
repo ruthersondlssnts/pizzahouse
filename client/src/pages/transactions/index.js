@@ -1,12 +1,10 @@
 import Container from "@mui/material/Container/Container";
-import Typography from "@mui/material/Typography";
+import HeaderTitle from "../../components/Header";
 import TransactionList from "./TransactionList";
 function Inventory() {
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom textAlign={"center"}>
-        Transaction History
-      </Typography>
+      <HeaderTitle title="Transaction History" />
       <TransactionList />
     </Container>
   );

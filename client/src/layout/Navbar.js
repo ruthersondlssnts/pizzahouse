@@ -95,7 +95,6 @@ function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={() => navigate("cart")}
-              color="inherit"
             >
               <Badge badgeContent={4} color="secondary">
                 <ShoppingCartIcon sx={{ p: 0, fontSize: 30, color: "black" }} />

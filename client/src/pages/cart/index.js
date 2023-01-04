@@ -1,8 +1,12 @@
+import Container from "@mui/material/Container/Container";
+import HeaderTitle from "../../components/Header";
+import CartList from "./CartList";
 function Cart() {
   return (
-    <div>
-        Cart
-    </div>
+    <Container maxWidth="md">
+      <HeaderTitle title="Shopping Cart" />
+      <CartList />
+    </Container>
   );
 }
 
