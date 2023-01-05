@@ -10,7 +10,11 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
 import Alert from "@mui/material/Alert/Alert";
-import { getProductsApi } from "../../apis";
+import {
+  getProductsApi,
+  patchDecrementProductStockApi,
+  updateDecrementProductStockApi,
+} from "../../apis";
 
 export default function ProductCatalog() {
   const [open, setOpen] = useState(false);
@@ -20,8 +24,31 @@ export default function ProductCatalog() {
     getProductsApi().then((res) => setProducts(res.data));
   }, []);
 
-  const handleClick = () => {
-    setOpen(true);
+  const handleAddToCart = (product) => {
+    updateDecrementProductStockApi(product.id).then((res) => {
+      //add item cart to local storage or update quantity
+      let cartItems = JSON.parse(localStorage.getItem("cart"));
+      cartItems = cartItems ?? [];
+
+      let cartItemIndex = cartItems.findIndex(
+        (p) => p.productId === product.id
+      );
+
+      let item = {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: cartItems[cartItemIndex]
+          ? cartItems[cartItemIndex].quantity + 1
+          : 1,
+      };
+
+      if (cartItemIndex > -1) cartItems[cartItemIndex] = item;
+      else cartItems.push(item);
+
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      setOpen(true);
+    });
   };
 
   const handleClose = (event, reason) => {
@@ -59,7 +86,7 @@ export default function ProductCatalog() {
                       <Button
                         variant="contained"
                         color="secondary"
-                        onClick={handleClick}
+                        onClick={() => handleAddToCart(product)}
                         disabled={product.inStock > 0 ? false : true}
                       >
                         {product.inStock > 0 ? "Add to Cart" : "Out of Stock"}

@@ -41,5 +41,62 @@ namespace PizzaHouse.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("IncrementProductStock/{productId}")]
+        public async Task<ActionResult> IncrementProductStock(int productId)
+        {
+            var product = await _repository.GetByIdAsync(productId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.InStock = product.InStock + 1;
+
+            _repository.Update(product);
+
+            await _repository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("DecrementProductStock/{productId}")]
+        public async Task<ActionResult> DecrementProductStock(int productId)
+        {
+            var product = await _repository.GetByIdAsync(productId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.InStock = product.InStock - 1;
+
+            _repository.Update(product);
+
+            await _repository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("AddProductStock/{productId}")]
+        public async Task<ActionResult> AddProductStock(int productId, int returnStocks)
+        {
+            var product = await _repository.GetByIdAsync(productId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.InStock = product.InStock + returnStocks;
+
+            _repository.Update(product);
+
+            await _repository.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

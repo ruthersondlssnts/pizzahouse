@@ -7,6 +7,7 @@ namespace PizzaHouse.Api.Services.Interfaces
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product?> GetByIdAsync(int productId);
         Task<bool> SaveChangesAsync();
+        void Update(Product product);
 
     }
 }

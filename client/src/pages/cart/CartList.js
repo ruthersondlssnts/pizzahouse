@@ -16,20 +16,112 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import {
+  updateAddProductStockApi,
+  updateDecrementProductStockApi,
+  updateIncrementProductStockApi,
+} from "../../apis";
 
-function createData(name, price, amount) {
-  return { name, price, amount };
+function CartItem({ product, setCartItems }) {
+  const [quantity, setQuantity] = useState(product.quantity);
+  console.log(product);
+  const handleQuantityChange = (isAdd) => {
+    if (quantity === 1 && !isAdd) return;
+
+    let apiUpdateStockCall = null;
+    if (isAdd) {
+      apiUpdateStockCall = updateDecrementProductStockApi(product.productId);
+    } else {
+      apiUpdateStockCall = updateIncrementProductStockApi(product.productId);
+    }
+
+    apiUpdateStockCall.then(() => {
+      let cartItems = JSON.parse(localStorage.getItem("cart"));
+      let cartItemIndex = cartItems.findIndex(
+        (p) => p.productId === product.productId
+      );
+
+      let item = {
+        productId: product.productId,
+        name: product.name,
+        price: product.price,
+        quantity: isAdd ? quantity + 1 : quantity - 1,
+      };
+      cartItems[cartItemIndex] = item;
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      setCartItems(cartItems);
+      setQuantity(isAdd ? quantity + 1 : quantity - 1);
+    });
+  };
+
+  const handleRemove = () => {
+    updateAddProductStockApi(product.productId, quantity).then(() => {
+      let cartItems = JSON.parse(localStorage.getItem("cart"));
+      let cartItemIndex = cartItems.findIndex(
+        (p) => p.productId === product.productId
+      );
+
+      cartItems.splice(cartItemIndex, 1);
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      setCartItems(cartItems);
+    });
+  };
+
+  return (
+    <TableRow
+      key={product.name}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell component="th" scope="row">
+        {product.name}
+      </TableCell>
+      <TableCell align="center">{product.price}</TableCell>
+      <TableCell align="right">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <IconButton onClick={() => handleQuantityChange(false)}>
+            <RemoveCircleIcon />
+          </IconButton>
+          <TextField
+            id="standard-basic"
+            value={quantity}
+            variant="standard"
+            size="small"
+            inputProps={{
+              readOnly: true,
+              style: { textAlign: "center" },
+            }}
+            sx={{ width: 50 }}
+          />
+          <IconButton onClick={() => handleQuantityChange(true)}>
+            <AddCircleIcon />
+          </IconButton>
+        </Box>
+      </TableCell>
+      <TableCell align="right">
+        <Tooltip title="Remove from cart">
+          <IconButton onClick={handleRemove}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+    </TableRow>
+  );
 }
-
-const rows = [
-  createData("Margarita", 159, 3),
-  createData("Hawaiian", 237, 2),
-  createData("Veg Supreme", 262, 5),
-  createData("Volcano", 305, 4),
-];
 
 export default function CartList() {
   const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem("cart"))
+  );
 
   return (
     <>
@@ -40,41 +132,20 @@ export default function CartList() {
               <TableHead>
                 <TableRow>
                   <TableCell>Pizza</TableCell>
-                  <TableCell align="right">Price (₱)</TableCell>
-                  <TableCell align="right">Amount</TableCell>
+                  <TableCell align="center">Price (₱)</TableCell>
+                  <TableCell align="center">Amount</TableCell>
                   <TableCell align="right"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        id="standard-basic"
-                        defaultValue={row.amount}
-                        variant="standard"
-                        size="small"
-                        type="number"
-                        inputProps={{ min: 1, style: { textAlign: "center" } }}
-                        sx={{ width: 50 }}
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <Tooltip title="Remove from cart">
-                        <IconButton>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {cartItems &&
+                  cartItems.map((item) => (
+                    <CartItem
+                      key={item.productId}
+                      product={item}
+                      setCartItems={setCartItems}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -85,25 +156,39 @@ export default function CartList() {
           </Typography>
           <List>
             <ListItem disablePadding>
-              <ListItemText primary="Total (12 items)" />
+              <ListItemText
+                primary={`Total (${
+                  cartItems?.reduce(
+                    (total, current) => current.quantity + total,
+                    0
+                  ) ?? 0
+                } items)`}
+              />
             </ListItem>
             <ListItem disablePadding>
               <ListItemText
                 primary={
                   <Typography sx={{ fontSize: 20 }} color="text.primary">
-                    ₱ 5231.00
+                    ₱{" "}
+                    {cartItems?.reduce(
+                      (total, current) =>
+                        current.quantity * current.price + total,
+                      0
+                    ) ?? 0}
                   </Typography>
                 }
               />
             </ListItem>
           </List>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => navigate("/checkout")}
-          >
-            Proceed To Checkout
-          </Button>
+          {cartItems && cartItems.length > 0 && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate("/checkout")}
+            >
+              Proceed To Checkout
+            </Button>
+          )}
         </Box>
       </Box>
     </>

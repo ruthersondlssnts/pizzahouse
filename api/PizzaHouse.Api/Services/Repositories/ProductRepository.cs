@@ -28,5 +28,12 @@ namespace PizzaHouse.Api.Services.Repositories
         {
             return await _context.SaveChangesAsync() >= 0;
         }
+
+        public void Update(Product product)
+        {
+            _context.Update(product);
+        }
+
+
     }
 }

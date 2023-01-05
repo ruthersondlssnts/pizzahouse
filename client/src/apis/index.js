@@ -22,3 +22,17 @@ export function patchProductStockApi(id, inStock) {
     }
   );
 }
+
+export function updateDecrementProductStockApi(id) {
+  return axios.put(PRODUCT_API_URL + "/DecrementProductStock/" + id);
+}
+
+export function updateIncrementProductStockApi(id) {
+  return axios.put(PRODUCT_API_URL + "/IncrementProductStock/" + id);
+}
+
+export function updateAddProductStockApi(id, stock) {
+  return axios.put(
+    PRODUCT_API_URL + "/AddProductStock/" + id + "?returnStocks=" + stock
+  );
+}
