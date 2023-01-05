@@ -11,7 +11,7 @@ function Layout() {
   return (
     <>
       <Navbar />
-      <Box sx={{ minHeight: "73vh" }}>
+      <Box sx={{ minHeight: "75.5vh" }}>
         <Outlet />
       </Box>
       <Snackbar
