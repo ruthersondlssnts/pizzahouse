@@ -12,7 +12,7 @@ using PizzaHouse.Api.Data;
 namespace PizzaHouse.Api.Migrations
 {
     [DbContext(typeof(PizzaHouseDbContext))]
-    [Migration("20230103092052_Initial")]
+    [Migration("20230105070317_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -59,10 +59,12 @@ namespace PizzaHouse.Api.Migrations
                     b.Property<int>("ProductCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalCost")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -108,8 +110,8 @@ namespace PizzaHouse.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -121,29 +123,40 @@ namespace PizzaHouse.Api.Migrations
                             Id = 1,
                             InStock = 45,
                             Name = "Margarita",
-                            Price = 559m
+                            Price = 559.0
                         },
                         new
                         {
                             Id = 2,
                             InStock = 87,
                             Name = "Hawaiian",
-                            Price = 699m
+                            Price = 699.0
                         },
                         new
                         {
                             Id = 3,
                             InStock = 76,
                             Name = "Veg Supreme",
-                            Price = 799m
+                            Price = 799.0
                         },
                         new
                         {
                             Id = 4,
                             InStock = 35,
                             Name = "Volcano",
-                            Price = 925m
+                            Price = 925.0
                         });
+                });
+
+            modelBuilder.Entity("PizzaHouse.Api.Models.Order", b =>
+                {
+                    b.HasOne("PizzaHouse.Api.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("PizzaHouse.Api.Models.OrderDetail", b =>

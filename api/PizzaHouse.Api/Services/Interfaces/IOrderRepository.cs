@@ -6,5 +6,6 @@ namespace PizzaHouse.Api.Services.Interfaces
     {
         Task<bool> SaveChangesAsync();
         Task CreateAsync(Order order);
+        Task<List<Order>> GetAllTransactionAsync();
     }
 }

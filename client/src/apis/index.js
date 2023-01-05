@@ -41,3 +41,7 @@ export function updateAddProductStockApi(id, stock) {
 export function saveOrder(data) {
   return axios.post(ORDER_API_URL, data);
 }
+
+export function getOrderTransactions() {
+  return axios.get(ORDER_API_URL + "/Transactions");
+}

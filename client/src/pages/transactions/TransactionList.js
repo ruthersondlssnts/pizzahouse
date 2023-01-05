@@ -11,28 +11,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useState } from "react";
-
-function createData(orderNo, dateTime, customer, total) {
-  return {
-    orderNo,
-    dateTime,
-    customer,
-    total,
-    orders: [
-      {
-        pizza: "Hawaian",
-        prize: "650",
-        amount: 3,
-      },
-      {
-        pizza: "Volcano",
-        prize: "950",
-        amount: 5,
-      },
-    ],
-  };
-}
+import { useEffect, useState } from "react";
+import { getOrderTransactions } from "../../apis";
 
 function Row(props) {
   const { row } = props;
@@ -51,7 +31,7 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          #{row.orderNo}
+          #{row.id}
         </TableCell>
         <TableCell>{row.dateTime}</TableCell>
         <TableCell>{row.customer}</TableCell>
@@ -69,17 +49,17 @@ function Row(props) {
                   <TableRow>
                     <TableCell>Pizza</TableCell>
                     <TableCell>Amount</TableCell>
-                    <TableCell>Price ($)</TableCell>
-                    <TableCell>Total ($)</TableCell>
+                    <TableCell>Price (₱)</TableCell>
+                    <TableCell>Total (₱)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.orders.map((order) => (
-                    <TableRow key={order.pizza}>
-                      <TableCell>{order.pizza}</TableCell>
-                      <TableCell>{order.amount}</TableCell>
-                      <TableCell>{order.prize}</TableCell>
-                      <TableCell>{order.amount * order.prize}</TableCell>
+                    <TableRow key={order.name}>
+                      <TableCell>{order.name}</TableCell>
+                      <TableCell>{order.quantity}</TableCell>
+                      <TableCell>{order.price}</TableCell>
+                      <TableCell>{order.quantity * order.price}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -92,15 +72,12 @@ function Row(props) {
   );
 }
 
-const rows = [
-  createData("0000121", "2022-10-10", "Lebron James", 6001.0),
-  createData("0000122", "2023-12-11", "Kevin Durant", 3910.0),
-  createData("0000123", "2021-03-06", "Kyrie Irving", 4610.0),
-  createData("0000124", "2019-02-05", "Michael Jordan", 6100.0),
-  createData("0000125", "2013-08-07", "Steph Curry", 5600.0),
-];
-
 export default function TransactionList() {
+  const [transactions, setTransactions] = useState(null);
+  useEffect(() => {
+    getOrderTransactions().then((res) => setTransactions(res.data));
+  }, []);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -110,13 +87,14 @@ export default function TransactionList() {
             <TableCell>Order #</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Customer</TableCell>
-            <TableCell>Total price (₱)</TableCell>
+            <TableCell>Total (₱)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.dateTime} row={row} />
-          ))}
+          {transactions &&
+            transactions.map((trans) => (
+              <Row key={trans.dateTime} row={trans} />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

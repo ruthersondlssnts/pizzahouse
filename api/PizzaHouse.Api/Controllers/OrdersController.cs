@@ -61,5 +61,36 @@ namespace PizzaHouse.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("Transactions")]
+        public async Task<IActionResult> GetAllTransactions()
+        {
+            var orders = await _orderRepository.GetAllTransactionAsync();
+            var transactions = new List<GetAllOrderTransactionsDto>();
+            foreach (var item in orders)
+            {
+                var products = new List<GetOrderProductsDto>();
+                foreach (var prod in item.OrderDetails)
+                {
+                    products.Add(new GetOrderProductsDto
+                    {
+                        Name = prod.Product.Name,
+                        Price = prod.Product.Price,
+                        Quantity = prod.Quantity
+                    });
+                }
+
+                transactions.Add(new GetAllOrderTransactionsDto
+                {
+                    Customer = item.Customer.Name,
+                    DateTime = item.OrderDate.ToShortDateString(),
+                    Id = item.Id.ToString("D5"),
+                    Total = item.TotalCost,
+                    Orders = products
+                });
+            }
+
+            return Ok(transactions);
+        }
     }
 }

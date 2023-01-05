@@ -5,35 +5,28 @@ using PizzaHouse.Api.Services.Interfaces;
 
 namespace PizzaHouse.Api.Services.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly PizzaHouseDbContext _context;
 
-        public ProductRepository(PizzaHouseDbContext context)
+        public OrderRepository(PizzaHouseDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task CreateAsync(Order order)
         {
-            return await _context.Products.ToListAsync();
+            await _context.Orders.AddAsync(order);
         }
 
-        public async Task<Product?> GetByIdAsync(int productId)
+        public async Task<List<Order>> GetAllTransactionAsync()
         {
-            return await _context.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
+            return await _context.Orders.Include(x => x.Customer).Include(x => x.OrderDetails).ThenInclude(x => x.Product).ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() >= 0;
         }
-
-        public void Update(Product product)
-        {
-            _context.Update(product);
-        }
-
-
     }
 }
