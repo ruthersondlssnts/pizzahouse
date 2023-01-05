@@ -6,7 +6,7 @@ using PizzaHouse.Api.Services.Interfaces;
 namespace PizzaHouse.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _repository;

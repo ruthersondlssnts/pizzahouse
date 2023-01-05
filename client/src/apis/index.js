@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PRODUCT_API_URL = API_URL + "products";
+const ORDER_API_URL = API_URL + "orders";
 
 export function getProductsApi() {
   return axios.get(PRODUCT_API_URL);
@@ -35,4 +36,8 @@ export function updateAddProductStockApi(id, stock) {
   return axios.put(
     PRODUCT_API_URL + "/AddProductStock/" + id + "?returnStocks=" + stock
   );
+}
+
+export function saveOrder(data) {
+  return axios.post(ORDER_API_URL, data);
 }

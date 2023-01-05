@@ -4,7 +4,7 @@ import HeaderTitle from "../../components/Header";
 import Form from "./Form";
 import Summary from "./Summary";
 
-function Cart() {
+function Checkout() {
   return (
     <Container maxWidth="md">
       <HeaderTitle title="Checkout" />
@@ -20,4 +20,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default Checkout;

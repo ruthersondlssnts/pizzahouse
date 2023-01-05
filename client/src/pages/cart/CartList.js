@@ -27,7 +27,6 @@ import {
 
 function CartItem({ product, setCartItems }) {
   const [quantity, setQuantity] = useState(product.quantity);
-  console.log(product);
   const handleQuantityChange = (isAdd) => {
     if (quantity === 1 && !isAdd) return;
 

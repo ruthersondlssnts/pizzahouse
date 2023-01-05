@@ -10,11 +10,7 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
 import Alert from "@mui/material/Alert/Alert";
-import {
-  getProductsApi,
-  patchDecrementProductStockApi,
-  updateDecrementProductStockApi,
-} from "../../apis";
+import { getProductsApi, updateDecrementProductStockApi } from "../../apis";
 
 export default function ProductCatalog() {
   const [open, setOpen] = useState(false);
