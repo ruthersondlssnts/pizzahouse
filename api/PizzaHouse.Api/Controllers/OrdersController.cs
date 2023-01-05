@@ -12,18 +12,15 @@ namespace PizzaHouse.Api.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
-        private readonly IProductRepository _productRepository;
 
         public OrdersController(
             IOrderRepository orderRepository,
             ICustomerRepository customerRepository,
-            IOrderDetailRepository orderDetailRepository,
-            IProductRepository productRepository)
+            IOrderDetailRepository orderDetailRepository)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
             _orderDetailRepository = orderDetailRepository;
-            _productRepository = productRepository;
         }
 
         [HttpPost]

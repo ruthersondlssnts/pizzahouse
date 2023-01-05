@@ -11,10 +11,14 @@ import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
 import Alert from "@mui/material/Alert/Alert";
 import { getProductsApi, updateDecrementProductStockApi } from "../../apis";
+import { useDispatch, useSelector } from "react-redux";
+import { setCart } from "../../store/slices/uiSlice";
 
 export default function ProductCatalog() {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState(null);
+  const { cart } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getProductsApi().then((res) => setProducts(res.data));
@@ -44,6 +48,7 @@ export default function ProductCatalog() {
 
       localStorage.setItem("cart", JSON.stringify(cartItems));
       setOpen(true);
+      dispatch(setCart(cart + 1));
     });
   };
 

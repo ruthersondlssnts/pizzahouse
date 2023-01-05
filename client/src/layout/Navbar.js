@@ -12,10 +12,12 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Badge } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const pages = ["home", "inventory", "transactions"];
 
 function Navbar() {
+  const { cart } = useSelector((state) => state.ui);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="black"
             >
               <MenuIcon color="black" />
             </IconButton>
@@ -96,7 +98,7 @@ function Navbar() {
               aria-haspopup="true"
               onClick={() => navigate("cart")}
             >
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cart} color="secondary">
                 <ShoppingCartIcon sx={{ p: 0, fontSize: 30, color: "black" }} />
               </Badge>
             </IconButton>

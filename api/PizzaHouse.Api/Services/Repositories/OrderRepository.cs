@@ -21,7 +21,11 @@ namespace PizzaHouse.Api.Services.Repositories
 
         public async Task<List<Order>> GetAllTransactionAsync()
         {
-            return await _context.Orders.Include(x => x.Customer).Include(x => x.OrderDetails).ThenInclude(x => x.Product).ToListAsync();
+            return await _context.Orders
+                .Include(x => x.Customer)
+                .Include(x => x.OrderDetails)
+                .ThenInclude(x => x.Product)
+                .ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync()

@@ -4,10 +4,13 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { saveOrder } from "../../apis";
+import { useDispatch } from "react-redux";
+import { setCart, toggleSuccessOrder } from "../../store/slices/uiSlice";
 
 function Form() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const dispatch = useDispatch();
 
   const handleOrder = () => {
     const cartItems = JSON.parse(localStorage.getItem("cart"));
@@ -25,9 +28,9 @@ function Form() {
     saveOrder(data).then(() => {
       navigate("/");
       localStorage.removeItem("cart");
+      dispatch(setCart(0));
+      dispatch(toggleSuccessOrder(true));
     });
-    //console.log(data);
-    //
   };
 
   return (

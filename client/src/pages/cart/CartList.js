@@ -24,9 +24,14 @@ import {
   updateDecrementProductStockApi,
   updateIncrementProductStockApi,
 } from "../../apis";
+import { setCart } from "../../store/slices/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function CartItem({ product, setCartItems }) {
   const [quantity, setQuantity] = useState(product.quantity);
+  const { cart } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
+
   const handleQuantityChange = (isAdd) => {
     if (quantity === 1 && !isAdd) return;
 
@@ -53,11 +58,13 @@ function CartItem({ product, setCartItems }) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
       setCartItems(cartItems);
       setQuantity(isAdd ? quantity + 1 : quantity - 1);
+      dispatch(setCart(isAdd ? cart + 1 : cart - 1));
     });
   };
 
   const handleRemove = () => {
     updateAddProductStockApi(product.productId, quantity).then(() => {
+      dispatch(setCart(cart - quantity));
       let cartItems = JSON.parse(localStorage.getItem("cart"));
       let cartItemIndex = cartItems.findIndex(
         (p) => p.productId === product.productId
