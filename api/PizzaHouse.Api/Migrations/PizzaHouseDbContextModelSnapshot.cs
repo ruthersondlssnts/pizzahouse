@@ -113,36 +113,6 @@ namespace PizzaHouse.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            InStock = 45,
-                            Name = "Margarita",
-                            Price = 559.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            InStock = 87,
-                            Name = "Hawaiian",
-                            Price = 699.0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            InStock = 76,
-                            Name = "Veg Supreme",
-                            Price = 799.0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            InStock = 35,
-                            Name = "Volcano",
-                            Price = 925.0
-                        });
                 });
 
             modelBuilder.Entity("PizzaHouse.Api.Models.Order", b =>

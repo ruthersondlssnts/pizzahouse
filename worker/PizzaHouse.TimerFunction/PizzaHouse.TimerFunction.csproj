@@ -7,6 +7,8 @@
     <PackageReference Include="EPPlus" Version="6.1.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.0.1" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="Z.BulkOperations" Version="3.0.63" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

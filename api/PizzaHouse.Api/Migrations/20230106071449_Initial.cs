@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace PizzaHouse.Api.Migrations
 {
     /// <inheritdoc />
@@ -88,17 +86,6 @@ namespace PizzaHouse.Api.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "InStock", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, 45, "Margarita", 559.0 },
-                    { 2, 87, "Hawaiian", 699.0 },
-                    { 3, 76, "Veg Supreme", 799.0 },
-                    { 4, 35, "Volcano", 925.0 }
                 });
 
             migrationBuilder.CreateIndex(
