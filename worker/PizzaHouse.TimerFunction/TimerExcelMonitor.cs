@@ -23,7 +23,7 @@ public class TimerExcelMonitor
 
 
     [FunctionName("TimerExcelMonitor")]
-    public async Task Run([TimerTrigger("*/30 * * * * *")] TimerInfo myTimer,
+    public async Task Run([TimerTrigger("*/5 * * * *")] TimerInfo myTimer,
         [Blob("pizzahouse/products.xlsx", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream excelProducts,
         ILogger log)
     {
