@@ -23,7 +23,7 @@ public class TimerExcelMonitor
 
 
     [FunctionName("TimerExcelMonitor")]
-    public async Task Run([TimerTrigger("*/5 * * * *")] TimerInfo myTimer,
+    public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer,
         [Blob("pizzahouse/products.xlsx", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream excelProducts,
         ILogger log)
     {
@@ -42,7 +42,7 @@ public class TimerExcelMonitor
 
     public void BatchUpsert(List<Product> products)
     {
-        using (SqlConnection con = new SqlConnection(Environment.GetEnvironmentVariable("ConnectionStrings:PizzaHouseConnection")))
+        using (SqlConnection con = new SqlConnection(Environment.GetEnvironmentVariable("PizzaHouseConnection")))
         {
             try
             {
