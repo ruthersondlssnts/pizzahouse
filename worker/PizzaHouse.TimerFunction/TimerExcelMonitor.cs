@@ -23,7 +23,7 @@ public class TimerExcelMonitor
 
 
     [FunctionName("TimerExcelMonitor")]
-    public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer,
+    public async Task Run([TimerTrigger("*/15 * * * * *")] TimerInfo myTimer,
         [Blob("pizzahouse/products.xlsx", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream excelProducts,
         ILogger log)
     {
@@ -34,10 +34,11 @@ public class TimerExcelMonitor
             List<Product> products = ConvertToProducts(excelProducts);
 
             BatchUpsert(products);
-            log.LogInformation($"UPSERT!");
+            log.LogInformation($"-------------------------------------------UPSERT!----------------------------------------------");
         }
         else
-            log.LogInformation($"File is not modified!");
+            log.LogInformation($"----------------------------------File is not modified!-------------------------------------------");
+
     }
 
     public void BatchUpsert(List<Product> products)
