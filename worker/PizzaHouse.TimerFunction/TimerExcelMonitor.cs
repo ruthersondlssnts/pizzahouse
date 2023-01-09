@@ -31,7 +31,7 @@ public class TimerExcelMonitor
 
         if (IsModified(excelProducts))
         {
-            var products = ConvertToProducts(excelProducts);
+            List<Product> products = ConvertToProducts(excelProducts);
 
             BatchUpsert(products);
             log.LogInformation($"UPSERT!");
