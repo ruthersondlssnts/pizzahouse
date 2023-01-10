@@ -28,8 +28,9 @@ namespace PizzaHouse.Api.Controllers
         {
             // upsert Customer
             var customer = new Customer { Name = orderDto.Fullname };
-            await _customerRepository.CreateAsync(customer);
+            await _customerRepository.CreateAsync(customer, orderDto.CustomerInformation);
             await _customerRepository.SaveChangesAsync();
+            await _customerRepository.SaveChangesCosmosAsync();
 
 
             var order = new Order

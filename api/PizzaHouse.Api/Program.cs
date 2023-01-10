@@ -22,6 +22,12 @@ builder.Services.AddDbContext<PizzaHouseDbContext>(
      dbContextOptions => dbContextOptions.UseSqlServer(
         builder.Configuration["ConnectionStrings:PizzaHouseConnection"]));
 
+builder.Services.AddDbContext<PizzaHouseCosmosDbContext>(
+     dbContextOptions => dbContextOptions.UseCosmos(
+         "https://pizzahousecosmos.documents.azure.com:443/",
+        "8WiPFwOHuAGZho6a7qF024WTtGh0fPnJrujomEJX4Y1Ct2nmaGnDb8oQZdA6hTjcGMzdkrjYTrd8ACDbnOEOlg==",
+        databaseName: "pizzahousedb"));
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
