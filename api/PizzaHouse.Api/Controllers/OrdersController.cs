@@ -30,7 +30,7 @@ namespace PizzaHouse.Api.Controllers
             var customer = new Customer { Name = orderDto.Fullname };
             await _customerRepository.CreateAsync(customer, orderDto.CustomerInformation);
             await _customerRepository.SaveChangesAsync();
-            await _customerRepository.SaveChangesCosmosAsync();
+            _customerRepository.SaveChangesCosmosAsync();
 
 
             var order = new Order
