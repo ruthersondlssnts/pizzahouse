@@ -1,3 +1,6 @@
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using PizzaHouse.Api.Data;
 using PizzaHouse.Api.Services.Interfaces;
@@ -18,15 +21,25 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+//#if !DEBUG
+var kevUrl = builder.Configuration["KeyVaultUrl"];
+
+var client = new SecretClient(new Uri(kevUrl!), new DefaultAzureCredential());
+
+builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+//#endif
+
+
 builder.Services.AddDbContext<PizzaHouseDbContext>(
      dbContextOptions => dbContextOptions.UseSqlServer(
         builder.Configuration["ConnectionStrings:PizzaHouseConnection"]));
 
 builder.Services.AddDbContext<PizzaHouseCosmosDbContext>(
      dbContextOptions => dbContextOptions.UseCosmos(
-         "https://pizzahousecosmos.documents.azure.com:443/",
-        "8WiPFwOHuAGZho6a7qF024WTtGh0fPnJrujomEJX4Y1Ct2nmaGnDb8oQZdA6hTjcGMzdkrjYTrd8ACDbnOEOlg==",
-        databaseName: "pizzahousedb"));
+        accountEndpoint: builder.Configuration["Cosmos:AccountEndpoint"]!,
+        accountKey: builder.Configuration["Cosmos:AccountKey"]!,
+        databaseName: builder.Configuration["Cosmos:DatabaseName"]!));
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
